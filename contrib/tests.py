@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .models import SampleModel, SampleModel2
-from contrib.restmodels import Resource, ResourceForeignKey, RESTAPI
+from contrib.restmodels import Resource, ResourceForeignKey, ResourceAPI
 
 
 class SampleModelAPI(Resource):
@@ -10,17 +10,18 @@ class SampleModelAPI(Resource):
 
 class SampleModelAPI2(Resource):
     query_set = SampleModel2.objects.all()
-    fields = ['titles',
+    fields = ['title',
               ('sample', ResourceForeignKey('sample', 'sample1'))]
 
 
-RESTAPI.register('sample', 'sample1', SampleModelAPI)
-RESTAPI.register('sample', 'sample2', SampleModelAPI2)
+ResourceAPI.register('sample', 'sample1', SampleModelAPI)
+ResourceAPI.register('sample', 'sample2', SampleModelAPI2)
 
 
 class RestmodelTestCase(TestCase):
     def setUp(self):
         self.data = SampleModel.objects.create(title='Sample')
+        self.data1 = SampleModel2.objects.create(title='ForeignKey', sample=self.data)
 
     def test_resolve_method(self):
         mySample = SampleModelAPI()
@@ -30,5 +31,6 @@ class RestmodelTestCase(TestCase):
 
     def test_resolve_method_with_error_fields(self):
         mySample = SampleModelAPI2()
-        with self.assertRaises(AttributeError):
-            mySample.resolve_fields()
+        result = mySample.resolve_fields()[0]
+        self.assertEqual(result['title'], self.data1.title)
+        self.assertEqual(result['sample'][0]['title'], self.data.title)
