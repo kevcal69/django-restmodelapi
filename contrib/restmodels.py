@@ -57,4 +57,4 @@ class ResourceForeignKey(object):
         api_resolver.query_set = query_set.__class__.objects.all()
         return api_resolver.resolve_fields()
 
-ResourceAPI = RESTAPI()
+ResourceAPI = RESTAPI() # noqa E305
