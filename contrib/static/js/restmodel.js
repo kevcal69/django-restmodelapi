@@ -32,7 +32,7 @@ var RestModel =  (function () {
             request.onload = function() {
                 if (request.status >= 200 && request.status < 400) {
                     // Success! return promise
-                    var resp = request.responseText;
+                    var resp = JSON.parse(request.responseText);
                     resolve(resp)
                 } else {
                     // Error! return promise
