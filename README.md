@@ -31,7 +31,7 @@ ResourceAPI.register('app', 'samplewithforeginkey', SampleModeAPIWithForeignkey)
 
 The ResourceAPI acts as services that handles the model seemlessly.
 
-### How to use : step 2: javascript (optional)
+### How to use : step 2 javascript (optional)
 ```sh
 #: Require the restmodel.js
 #: Either
@@ -52,4 +52,4 @@ Sample.objects.filter({
 });
 
 ```
-Will soon add rest capabilities
+Will soon add rest capabilities... :) stay tune
